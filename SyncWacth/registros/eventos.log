@@ -1,0 +1,5 @@
+2026-10-22 09:37:00 [INFO       ] [sistema] SyncWatch iniciado en NITRO5 (Windows 11), Python 3.13.14, psutil 7.1.0
+2026-10-22 09:37:00 [ADVERTENCIA] [sistema] Sin privilegios de administrador: algunos procesos mostrarán datos restringidos
+2026-10-22 09:37:00 [INFO       ] [sistema] El sistema operativo no expone la temperatura a psutil (habitual en Windows)
+2026-10-22 09:37:03 [ADVERTENCIA] [alerta] CPU (real) = 80.3 superó el umbral ADVERTENCIA (75)
+2026-10-22 09:37:05 [INFO       ] [alerta] CPU (real) bajó a 59.9: nivel NORMAL

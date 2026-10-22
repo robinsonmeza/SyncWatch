@@ -1,0 +1,43 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/claude/syncwatch
+configfile: pytest.ini
+testpaths: tests
+plugins: platformdirs-4.12.3, anyio-4.15.1
+collecting ... collected 32 items
+
+tests/test_alertas_monitor.py::test_histeresis[70-normal-normal] PASSED  [  3%]
+tests/test_alertas_monitor.py::test_histeresis[76-normal-advertencia] PASSED [  6%]
+tests/test_alertas_monitor.py::test_histeresis[73-advertencia-advertencia] PASSED [  9%]
+tests/test_alertas_monitor.py::test_histeresis[69-advertencia-normal] PASSED [ 12%]
+tests/test_alertas_monitor.py::test_histeresis[91-normal-critico] PASSED [ 15%]
+tests/test_alertas_monitor.py::test_histeresis[86-critico-critico] PASSED [ 18%]
+tests/test_alertas_monitor.py::test_histeresis[84-critico-advertencia] PASSED [ 21%]
+tests/test_alertas_monitor.py::test_histeresis[40-critico-normal] PASSED [ 25%]
+tests/test_alertas_monitor.py::test_gestor_registra_eventos_solo_en_cambios PASSED [ 28%]
+tests/test_alertas_monitor.py::test_configurar_valida PASSED             [ 31%]
+tests/test_alertas_monitor.py::test_monitor_lectura_real PASSED          [ 34%]
+tests/test_alertas_monitor.py::test_monitor_procesos_ordenados PASSED    [ 37%]
+tests/test_alertas_monitor.py::test_info_sistema PASSED                  [ 40%]
+tests/test_buffer.py::test_fifo_un_hilo PASSED                           [ 43%]
+tests/test_buffer.py::test_productor_se_bloquea_con_buffer_lleno PASSED  [ 46%]
+tests/test_buffer.py::test_consumidor_se_bloquea_con_buffer_vacio_y_despierta PASSED [ 50%]
+tests/test_buffer.py::test_sincronizado_nunca_desborda[1] PASSED         [ 53%]
+tests/test_buffer.py::test_sincronizado_nunca_desborda[3] PASSED         [ 56%]
+tests/test_buffer.py::test_sincronizado_nunca_desborda[8] PASSED         [ 59%]
+tests/test_buffer.py::test_inseguro_produce_condicion_de_carrera PASSED  [ 62%]
+tests/test_simulador.py::test_construir_respeta_limites PASSED           [ 65%]
+tests/test_simulador.py::test_escenario_desconocido PASSED               [ 68%]
+tests/test_simulador.py::test_conservacion_con_sincronizacion[equilibrado] PASSED [ 71%]
+tests/test_simulador.py::test_conservacion_con_sincronizacion[productores_rapidos] PASSED [ 75%]
+tests/test_simulador.py::test_conservacion_con_sincronizacion[consumidores_rapidos] PASSED [ 78%]
+tests/test_simulador.py::test_productores_rapidos_bloquea_productores PASSED [ 81%]
+tests/test_simulador.py::test_consumidores_rapidos_bloquea_consumidores PASSED [ 84%]
+tests/test_simulador.py::test_comparacion_sin_vs_con[1] PASSED           [ 87%]
+tests/test_simulador.py::test_comparacion_sin_vs_con[2] PASSED           [ 90%]
+tests/test_simulador.py::test_comparacion_sin_vs_con[3] PASSED           [ 93%]
+tests/test_simulador.py::test_stress_dispara_throttling_y_autoproteccion PASSED [ 96%]
+tests/test_simulador.py::test_fuga_ram_detiene_simulacion PASSED         [100%]
+
+============================= 32 passed in 37.77s ==============================

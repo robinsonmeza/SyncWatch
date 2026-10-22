@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SyncWatch</title>
+  <link rel="stylesheet" href="/static/estilos.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%236366f1'/%3E%3Cpath d='M7 18h4l3-7 4 12 3-7h4' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="fondo" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<header class="glass">
+  <div class="marca">
+    <div class="logo" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h4l3-7 4 12 3-7h4"/></svg>
+    </div>
+    <div><b>SyncWatch</b><small>Monitor de recursos · Laboratorio de sincronización</small></div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="activa" data-vista="monitor" role="tab">Monitor</button>
+    <button data-vista="lab" role="tab">Laboratorio</button>
+    <button data-vista="comparar" role="tab">Comparación</button>
+    <button data-vista="registro" role="tab">Registro</button>
+  </nav>
+  <div class="cab-der">
+    <span class="chip host" id="chip-host"><span class="punto"></span><span>conectando…</span></span>
+    <span class="chip alerta" id="chip-alertas" title="Alertas activas">Sin alertas</span>
+  </div>
+</header>
+
+<main>
+<!-- ============================================================ MONITOR (P7) -->
+<section class="vista activa" id="vista-monitor">
+  <div class="grid g4">
+    <div class="glass card kpi" id="kpi-cpu">
+      <div class="txt">
+        <div class="etq">CPU <span class="tag real">REAL</span></div>
+        <div class="valor">–<small>%</small></div>
+        <div class="sub">–</div>
+      </div>
+      <svg class="anillo" viewBox="0 0 64 64"><circle class="pista" cx="32" cy="32" r="26"/><circle class="arco" cx="32" cy="32" r="26" stroke="var(--cpu)"/></svg>
+    </div>
+    <div class="glass card kpi" id="kpi-ram">
+      <div class="txt">
+        <div class="etq">Memoria RAM <span class="tag real">REAL</span></div>
+        <div class="valor">–<small>%</small></div>
+        <div class="sub">–</div>
+      </div>
+      <svg class="anillo" viewBox="0 0 64 64"><circle class="pista" cx="32" cy="32" r="26"/><circle class="arco" cx="32" cy="32" r="26" stroke="var(--ram)"/></svg>
+    </div>
+    <div class="glass card kpi" id="kpi-disco">
+      <div class="txt">
+        <div class="etq">Disco <span class="tag real">REAL</span></div>
+        <div class="valor">–<small>%</small></div>
+        <div class="sub">–</div>
+      </div>
+      <svg class="anillo" viewBox="0 0 64 64"><circle class="pista" cx="32" cy="32" r="26"/><circle class="arco" cx="32" cy="32" r="26" stroke="var(--disk)"/></svg>
+    </div>
+    <div class="glass card kpi" id="kpi-proc">
+      <div class="txt">
+        <div class="etq">Procesos <span class="tag real">REAL</span></div>
+        <div class="valor">–</div>
+        <div class="sub">–</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g-7-3 fila">
+    <div class="glass card">
+      <h3>Uso en tiempo real · últimos 2 minutos
+        <span class="der leyenda"><span><i style="background:var(--cpu)"></i>CPU</span><span><i style="background:var(--ram)"></i>RAM</span></span>
+      </h3>
+      <div class="grafico"><canvas id="graf-real"></canvas></div>
+    </div>
+    <div class="glass card">
+      <h3>Alertas activas</h3>
+      <div class="alertas-lista" id="lista-alertas"></div>
+    </div>
+  </div>
+
+  <div class="grid g-7-3 fila">
+    <div class="glass card">
+      <h3>Procesos con mayor consumo
+        <span class="der"><span class="seg" id="seg-orden"><button class="activa" data-orden="cpu">CPU</button><button data-orden="ram">RAM</button></span></span>
+      </h3>
+      <table>
+        <thead><tr><th>PID</th><th>Nombre</th><th class="num">CPU %</th><th class="num">RAM %</th><th>Usuario</th></tr></thead>
+        <tbody id="tabla-procesos"></tbody>
+      </table>
+      <div class="nota" id="nota-procesos"></div>
+    </div>
+    <div class="glass card">
+      <h3>Uso por núcleo</h3>
+      <div class="nucleos" id="nucleos"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ LABORATORIO (P5) -->
+<section class="vista" id="vista-lab">
+  <div class="grid g-lab">
+    <aside class="glass card">
+      <h3>Escenario <span class="tag sim">SIMULADO</span></h3>
+      <label class="campo"><select id="sel-escenario"></select></label>
+      <p class="desc" id="esc-desc"></p>
+      <div class="observar" id="esc-observar"></div>
+
+      <div class="interruptor"><span>Sincronización (mutex + semáforos)</span><input type="checkbox" id="cfg-sincronizado" checked></div>
+      <div id="campos-cfg"></div>
+      <label class="campo"><span class="cab">Semilla</span><input type="number" id="cfg-semilla" min="0" step="1"></label>
+      <div class="botones">
+        <button class="btn primario" id="btn-iniciar">▶ Iniciar</button>
+        <button class="btn peligro" id="btn-detener" disabled>■ Detener</button>
+      </div>
+    </aside>
+
+    <div class="pila">
+      <div class="glass card">
+        <div class="franja">
+          <span class="modo con" id="lab-modo">CON SINCRONIZACIÓN</span>
+          <span class="chip" id="lab-estado">Sin iniciar</span>
+          <span class="chip" id="lab-tiempo">0.0 s</span>
+        </div>
+        <p class="explicacion" id="lab-explicacion">Elige un escenario y pulsa <b>Iniciar</b>. Verás a los productores (P) llenar el búfer y a los consumidores (C) vaciarlo.</p>
+      </div>
+
+      <div class="glass card">
+        <h3>Productor → Búfer → Consumidor</h3>
+        <div class="escena">
+          <div class="hilos" id="lab-productores"></div>
+          <div class="buffer-wrap">
+            <div class="buffer-cab"><span id="buf-ocupacion">0 / 0 ocupadas</span><span id="buf-cuenta">cuenta interna: 0</span></div>
+            <div class="buffer" id="lab-buffer"></div>
+          </div>
+          <div class="hilos" id="lab-consumidores"></div>
+        </div>
+        <div class="semaforos">
+          <div class="sem"><small>Semáforo espacios_libres</small><b id="sem-esp">–</b><em>Productores esperan si llega a 0</em></div>
+          <div class="sem"><small>Semáforo items_disponibles</small><b id="sem-items">–</b><em>Consumidores esperan si llega a 0</em></div>
+          <div class="sem"><small>Mutex del búfer</small><b id="sem-mutex">–</b><em>Un solo hilo en la sección crítica</em></div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="glass card">
+          <h3>Contadores y verificación</h3>
+          <div class="mini">
+            <div><small>Producidos</small><b id="c-prod">0</b></div>
+            <div><small>Consumidos</small><b id="c-cons">0</b></div>
+            <div><small>En búfer</small><b id="c-buf">0</b></div>
+            <div><small>Bloqueos</small><b id="c-bloq">0</b></div>
+          </div>
+          <div class="conservacion ok" id="conservacion"><span class="ico">✓</span><span>Esperando datos…</span></div>
+          <p class="nota" id="t-bloqueado"></p>
+        </div>
+        <div class="glass card">
+          <h3>Carga del stress test <span class="tag sim">SIMULADO</span></h3>
+          <div class="mini">
+            <div><small><i style="background:var(--cpu)"></i>CPU</small><b id="s-cpu">–</b></div>
+            <div><small><i style="background:var(--gpu)"></i>GPU</small><b id="s-gpu">–</b></div>
+            <div><small><i style="background:var(--ram)"></i>RAM</small><b id="s-ram">–</b></div>
+            <div><small><i style="background:var(--temp)"></i>Temp.</small><b id="s-temp">–</b></div>
+          </div>
+          <div class="grafico bajo"><canvas id="graf-sim"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ COMPARACIÓN -->
+<section class="vista" id="vista-comparar">
+  <div class="glass card">
+    <h3>Experimento: misma configuración, con y sin sincronización <span class="tag sim">SIMULADO</span></h3>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); align-items: end;">
+      <label class="campo">Capacidad<input type="number" id="cmp-capacidad" value="8" min="1" max="20"></label>
+      <label class="campo">Productores<input type="number" id="cmp-productores" value="3" min="1" max="8"></label>
+      <label class="campo">Consumidores<input type="number" id="cmp-consumidores" value="3" min="1" max="8"></label>
+      <label class="campo">Ítems por productor<input type="number" id="cmp-items" value="30" min="1" max="500"></label>
+      <label class="campo">Semilla<input type="number" id="cmp-semilla" value="42" min="0"></label>
+      <label class="campo"><button class="btn primario" id="btn-comparar" style="width:100%">Ejecutar comparación</button></label>
+    </div>
+  </div>
+
+  <div class="grid g2 fila">
+    <div class="glass card versus mal" id="cmp-sin">
+      <div class="veredicto"><div class="ico">✗</div><div><b>Sin sincronización</b><small>Ejecuta el experimento para ver resultados</small></div></div>
+      <table><tbody></tbody></table>
+    </div>
+    <div class="glass card versus bien" id="cmp-con">
+      <div class="veredicto"><div class="ico">✓</div><div><b>Con mutex + semáforos</b><small>Ejecuta el experimento para ver resultados</small></div></div>
+      <table><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="grid g2 fila">
+    <div class="glass card">
+      <h3>¿Qué es la condición de carrera observada?</h3>
+      <ol class="pasos">
+        <li>El productor <code>P1</code> lee <code>entrada = 3</code>.</li>
+        <li>Antes de avanzar el índice ocurre un cambio de contexto y <code>P2</code> también lee <code>entrada = 3</code>.</li>
+        <li>Ambos escriben en la casilla 3: el ítem de P1 se <b>sobrescribe</b> y se <b>pierde</b>.</li>
+        <li>Lo mismo pasa con dos consumidores que leen la misma <code>salida</code>: un ítem se procesa <b>dos veces</b> (duplicado) y el otro encuentra la casilla <b>vacía</b>.</li>
+        <li><code>cuenta = cuenta + 1</code> no es atómica: actualizaciones perdidas hacen que la cuenta deje de coincidir con la realidad (incluso negativa o mayor que la capacidad).</li>
+      </ol>
+      <div class="ids" id="cmp-ids"></div>
+      <p class="nota">Con el mutex, los pasos 1–3 se ejecutan como una unidad indivisible; con los semáforos, nadie inserta en un búfer lleno ni extrae de uno vacío. Los números exactos de la versión insegura cambian en cada ejecución (no determinismo), pero <b>siempre</b> aparecen anomalías, y la versión sincronizada <b>siempre</b> cumple la regla.</p>
+    </div>
+    <div class="glass card">
+      <h3>Anomalías por ejecución</h3>
+      <div class="grafico bajo"><canvas id="graf-cmp"></canvas></div>
+      <table style="margin-top:10px">
+        <thead><tr><th>#</th><th>Hora</th><th class="num">Perdidos</th><th class="num">Duplicados</th><th class="num">Vacías</th><th>Con sync</th></tr></thead>
+        <tbody id="cmp-historial"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ REGISTRO -->
+<section class="vista" id="vista-registro">
+  <div class="grid g-7-3">
+    <div class="glass card">
+      <h3>Bitácora de eventos
+        <span class="der">
+          <span class="seg" id="seg-nivel"><button class="activa" data-nivel="">Todos</button><button data-nivel="info">Info</button><button data-nivel="advertencia">Advertencia</button><button data-nivel="critico">Crítico</button></span>
+          <select id="sel-origen" style="width:auto;padding:5px 8px;font-size:12px">
+            <option value="">Todo origen</option><option value="alerta">Alertas</option><option value="simulacion">Simulación</option>
+            <option value="comparacion">Comparación</option><option value="registro">Registro</option><option value="sistema">Sistema</option>
+          </select>
+        </span>
+      </h3>
+      <div class="eventos" id="eventos"></div>
+    </div>
+    <div class="pila">
+      <div class="glass card">
+        <h3>Registro de métricas <span class="tag real">REAL</span></h3>
+        <div class="interruptor"><span>Guardar en CSV</span><input type="checkbox" id="reg-activo"></div>
+        <label class="campo"><span class="cab">Intervalo</span>
+          <select id="reg-intervalo"><option value="1">Cada 1 s</option><option value="2" selected>Cada 2 s</option><option value="5">Cada 5 s</option><option value="10">Cada 10 s</option></select>
+        </label>
+        <p class="nota" id="reg-estado" style="margin-top:-4px">Inactivo</p>
+        <div class="botones" style="margin-top:12px">
+          <a class="btn chico" href="/api/exportar/metricas">⇩ Métricas CSV</a>
+          <a class="btn chico" href="/api/exportar/eventos">⇩ Eventos CSV</a>
+        </div>
+      </div>
+      <div class="glass card">
+        <h3>Umbrales de alerta <span class="der"><button class="btn chico" id="btn-umbrales">Guardar</button></span></h3>
+        <table class="umbrales"><thead><tr><th>Métrica</th><th class="num">Advert.</th><th class="num">Crítico</th></tr></thead><tbody id="tabla-umbrales"></tbody></table>
+        <p class="nota" id="umbrales-msg">Se sube de nivel al alcanzar el umbral y se baja 5 puntos por debajo (histéresis).</p>
+      </div>
+    </div>
+  </div>
+  <div class="glass card fila">
+    <h3>Limitaciones de métricas y permisos en este equipo</h3>
+    <ul class="lista-lim" id="limitaciones"></ul>
+  </div>
+</section>
+</main>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script src="/static/vendor/chart.umd.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

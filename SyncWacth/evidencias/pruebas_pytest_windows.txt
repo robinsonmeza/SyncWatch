@@ -1,0 +1,12 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\Users\robin\OneDrive\Documentos\Sistemas Operativos\SyncWacth
+configfile: pytest.ini
+testpaths: tests
+collected 32 items
+
+tests\test_alertas_monitor.py .............                              [ 40%]
+tests\test_buffer.py .......                                             [ 62%]
+tests\test_simulador.py ............                                     [100%]
+
+============================= 32 passed in 45.80s =============================
