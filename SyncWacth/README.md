@@ -1,7 +1,7 @@
 # SyncWatch
-
+**PROYECTO FINAL - SISTEMAS OPERATIVOS**
 **Monitor de recursos (Proyecto 7 · SysWatch) + Laboratorio de sincronización (Proyecto 5 · SyncLab)**
-Sistemas Operativos · Robinson Meza
+Sistemas Operativos · Nayelin Castillo · Robinson Meza
 
 SyncWatch lee las métricas **reales** del equipo donde se ejecuta (CPU, RAM, disco y procesos) y, en el mismo panel, ofrece un **laboratorio simulado** de stress test construido sobre el problema productor‑consumidor con búfer compartido.
 
@@ -23,7 +23,7 @@ SyncWatch lee las métricas **reales** del equipo donde se ejecuta (CPU, RAM, di
 
 Alternativa sin instalar: copie `SyncWatch.exe` a cualquier carpeta y ejecútelo con doble clic. El archivo lleva dentro Python, psutil, Flask y la interfaz.
 
-**Dónde quedan los datos:** `Documentos\SyncWatch\registros` (CSV de métricas y `eventos.log`). Desinstalar el programa no borra esta carpeta, así las evidencias se conservan.
+**Dónde quedan los datos:** `CARPETA DE DESTINO\SyncWatch\registros` (CSV de métricas y `eventos.log`). Desinstalar el programa no borra esta carpeta, así las evidencias se conservan.
 
 > Windows SmartScreen o el antivirus pueden avisar la primera vez porque el ejecutable no está firmado digitalmente. Pulse **Más información → Ejecutar de todas formas**. Es normal en programas académicos empaquetados con PyInstaller.
 
