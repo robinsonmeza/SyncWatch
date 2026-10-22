@@ -13,7 +13,7 @@ SyncWatch lee las métricas **reales** del equipo donde se ejecuta (CPU, RAM, di
 
 ---
 
-## 1. Instalación y ejecución (Windows)
+## 1. Instalación y ejecución (Solo Windows)
 
 ### Opción A — Instalador (equipos nuevos, sin Python)
 
@@ -27,7 +27,7 @@ Alternativa sin instalar: copie `SyncWatch.exe` a cualquier carpeta y ejecútelo
 
 > Windows SmartScreen o el antivirus pueden avisar la primera vez porque el ejecutable no está firmado digitalmente. Pulse **Más información → Ejecutar de todas formas**. Es normal en programas académicos empaquetados con PyInstaller.
 
-### Opción B — Construir el `.exe` y el instalador (una sola vez, en el equipo del desarrollador)
+### Opción B — Construir el `.exe` y el instalador (una sola vez)
 
 Requisitos: Python 3.10+ e internet. Doble clic en **`construir_exe.bat`**. El script:
 
